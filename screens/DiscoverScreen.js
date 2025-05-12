@@ -1,12 +1,29 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import FilterModal from '../components/modals/FilterModal';
 
 export default function DiscoverScreen({ navigation }) {
   const [forMeActive, setForMeActive] = useState(false);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [activeFilters, setActiveFilters] = useState(null);
   
   const handleRecipePress = (recipe) => {
     navigation.navigate('RecipeDetail', { recipe });
+  };
+  
+  const openFilterModal = () => {
+    setFilterModalVisible(true);
+  };
+
+  const closeFilterModal = () => {
+    setFilterModalVisible(false);
+  };
+
+  const applyFilters = (filters) => {
+    console.log('Applied filters:', filters);
+    setActiveFilters(filters);
+    // Here you would filter your recipes based on the filters
   };
   
   return (
@@ -32,7 +49,10 @@ export default function DiscoverScreen({ navigation }) {
         
         {/* Filters */}
         <View style={styles.filterContainer}>
-          <TouchableOpacity style={styles.filterButton}>
+          <TouchableOpacity 
+            style={styles.filterButton}
+            onPress={openFilterModal}
+          >
             <Ionicons name="options" size={16} color="#3E2F2F" style={{marginRight: 4}} />
             <Text style={styles.filterButtonText}>Filter</Text>
           </TouchableOpacity>
@@ -170,6 +190,12 @@ export default function DiscoverScreen({ navigation }) {
           />
         </View>
       </ScrollView>
+      
+      <FilterModal
+        visible={filterModalVisible}
+        onClose={closeFilterModal}
+        onApply={applyFilters}
+      />
     </SafeAreaView>
   );
 }

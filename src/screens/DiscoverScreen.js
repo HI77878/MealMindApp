@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import FilterModal from '../components/modals/FilterModal';
 
 export default function DiscoverScreen({ navigation }) {
   const [forMeActive, setForMeActive] = useState(false);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [activeFilters, setActiveFilters] = useState(null);
+  
+  const openFilterModal = () => {
+    setFilterModalVisible(true);
+  };
+
+  const closeFilterModal = () => {
+    setFilterModalVisible(false);
+  };
+
+  const applyFilters = (filters) => {
+    console.log('Applied filters:', filters);
+    setActiveFilters(filters);
+    // Hier könnten die Rezepte basierend auf den Filtern gefiltert werden
+  };
   
   return (
     <SafeAreaView style={styles.container}>
@@ -27,7 +44,10 @@ export default function DiscoverScreen({ navigation }) {
         
         {/* Filters */}
         <View style={styles.filterContainer}>
-          <TouchableOpacity style={styles.filterButton}>
+          <TouchableOpacity 
+            style={styles.filterButton}
+            onPress={openFilterModal}
+          >
             <Text style={styles.filterButtonText}>⚙️ Filter</Text>
           </TouchableOpacity>
           
@@ -92,6 +112,12 @@ export default function DiscoverScreen({ navigation }) {
           />
         </View>
       </ScrollView>
+      
+      <FilterModal
+        visible={filterModalVisible}
+        onClose={closeFilterModal}
+        onApply={applyFilters}
+      />
     </SafeAreaView>
   );
 }

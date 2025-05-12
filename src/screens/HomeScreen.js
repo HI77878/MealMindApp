@@ -1,12 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  SafeAreaView, 
+  ScrollView, 
+  TouchableOpacity 
+} from 'react-native';
 
 export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
       >
         {/* Header */}
         <View style={styles.header}>
@@ -81,7 +88,9 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.addButtonText}>+ Add Meal</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.scanButton}>
-                <Text style={styles.scanButtonText}>📷</Text>
+                <View style={styles.qrCodeIcon}>
+                  <View style={styles.qrCodeSquare}></View>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
@@ -94,8 +103,6 @@ export default function HomeScreen({ navigation }) {
             calories={420} 
             protein={32} 
             completed={true} 
-            id="1"
-            navigation={navigation}
           />
           
           <MealCard 
@@ -105,8 +112,6 @@ export default function HomeScreen({ navigation }) {
             calories={580} 
             protein={42} 
             completed={true} 
-            id="2"
-            navigation={navigation}
           />
           
           <MealCard 
@@ -116,8 +121,6 @@ export default function HomeScreen({ navigation }) {
             calories={250} 
             protein={18} 
             completed={false} 
-            id="3"
-            navigation={navigation}
           />
           
           <MealCard 
@@ -127,8 +130,6 @@ export default function HomeScreen({ navigation }) {
             calories={620} 
             protein={45} 
             completed={false} 
-            id="4"
-            navigation={navigation}
           />
         </View>
 
@@ -148,30 +149,26 @@ export default function HomeScreen({ navigation }) {
 }
 
 // Meal Card Component
-function MealCard({ title, time, name, calories, protein, completed, id, navigation }) {
+function MealCard({ title, time, name, calories, protein, completed }) {
   return (
-    <TouchableOpacity 
-      onPress={() => navigation.navigate('RecipeDetail', { recipeId: id })}
-    >
-      <View style={[
-        styles.mealCard, 
-        { borderLeftWidth: 4, borderLeftColor: completed ? '#B8E0D2' : '#FF9E7E' }
-      ]}>
-        <View style={styles.mealCardContent}>
-          <View>
-            <View style={styles.mealCardHeader}>
-              <Text style={styles.mealCardTitle}>{title}</Text>
-              <Text style={styles.mealCardTime}>{time}</Text>
-            </View>
-            <Text style={styles.mealCardName}>{name}</Text>
+    <View style={[
+      styles.mealCard, 
+      { borderLeftWidth: 4, borderLeftColor: completed ? '#B8E0D2' : '#FF9E7E' }
+    ]}>
+      <View style={styles.mealCardContent}>
+        <View>
+          <View style={styles.mealCardHeader}>
+            <Text style={styles.mealCardTitle}>{title}</Text>
+            <Text style={styles.mealCardTime}>{time}</Text>
           </View>
-          <View style={styles.mealCardMetrics}>
-            <Text style={styles.mealCardCalories}>{calories} kcal</Text>
-            <Text style={styles.mealCardProtein}>{protein}g protein</Text>
-          </View>
+          <Text style={styles.mealCardName}>{name}</Text>
+        </View>
+        <View style={styles.mealCardMetrics}>
+          <Text style={styles.mealCardCalories}>{calories} kcal</Text>
+          <Text style={styles.mealCardProtein}>{protein}g protein</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -230,7 +227,7 @@ const styles = StyleSheet.create({
   caloriesContainer: {
     alignItems: 'center',
     marginBottom: 30,
-    height: 90,
+    marginTop: 10,
   },
   caloriesSemiCircle: {
     width: 180,
@@ -240,23 +237,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 158, 126, 0.2)',
     overflow: 'hidden',
     position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
   },
   caloriesSemiCircleProgress: {
     position: 'absolute',
-    width: 180,
+    bottom: 0,
+    left: 0,
+    width: 180, 
     height: 90,
     borderTopLeftRadius: 90,
     borderTopRightRadius: 90,
     backgroundColor: '#FF9E7E',
-    // Für 60% Fortschritt
-    transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }],
+    overflow: 'hidden',
+    // Anpassen für 57% Fortschritt
+    transform: [
+      { scaleX: 0.57 }
+    ],
     transformOrigin: 'bottom center',
-    bottom: 0,
   },
   caloriesTextContainer: {
-    marginTop: 20,
+    position: 'absolute',
+    top: 15,
+    left: 0,
+    width: 180,
     alignItems: 'center',
   },
   caloriesText: {
@@ -325,11 +327,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   scanButton: {
-    marginLeft: 8,
-    padding: 8,
-  },
-  scanButtonText: {
-    fontSize: 20,
+    marginLeft: 12,
+    padding: 4,
   },
   qrCodeIcon: {
     width: 24,
